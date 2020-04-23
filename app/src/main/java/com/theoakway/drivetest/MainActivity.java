@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ammarptn.debug.gdrive.lib.GDriveDebugViewActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,9 +34,13 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import com.theoakway.drivetest.HelperClasses.DriveFolder;
+import com.theoakway.drivetest.HelperClasses.DriveServiceHelper;
+import com.theoakway.drivetest.HelperClasses.GoogleDriveFileHolder;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +59,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        requestSignIn();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
+
+        if(account == null){
+            requestSignIn();
+        }
+        else {
+
+            GoogleAccountCredential credential =
+                    GoogleAccountCredential.usingOAuth2(
+                            MainActivity.this, Collections.singleton(DriveScopes.DRIVE_FILE));
+            credential.setSelectedAccountName(account.getAccount().name);
+            com.google.api.services.drive.Drive googleDriveService =
+                    new com.google.api.services.drive.Drive.Builder(
+                            AndroidHttp.newCompatibleTransport(),
+                            new GsonFactory(),
+                            credential)
+                            .setApplicationName("AppName")
+                            .build();
+            driveServiceHelper = new DriveServiceHelper(googleDriveService);
+            uploadPdfFile();
+           // driveServiceHelper.createFolder("Hello Man",null);
+            driveServiceHelper.createFilePickerIntent();
+            File file = new File("/storage/emulated/0/");
+            GoogleDriveFileHolder googleDriveFileHolder  = new GoogleDriveFileHolder();
+            googleDriveFileHolder = driveServiceHelper.searchFile("BmCompanyList",DriveFolder.TYPE_JSON).getResult();
+            driveServiceHelper.downloadFile(file,googleDriveFileHolder.getId());
+           
+        }
+
+
 
     }
 
@@ -99,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
                                 .setApplicationName("Resume")
                                 .build();
                         driveServiceHelper = new DriveServiceHelper(googleDriveService);
-                        uploadPdfFile();
-
 
                     }
                 })
@@ -115,31 +147,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void uploadPdfFile()
     {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setTitle("Uploading...");
-        dialog.show();
-
-        String filePath  = "/storage/emulated/0/How to delete offers from Firebase.docx";
-        driveServiceHelper.createFilePDF(filePath)
-                .addOnSuccessListener(new OnSuccessListener<String>() {
-                    @Override
-                    public void onSuccess(String s) {
-                        Toast.makeText(MainActivity.this,"Hello. Uploaded",Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.v("TAG","Existing Files=>"+driveServiceHelper.retrieveFile());
-                        Toast.makeText(MainActivity.this,"Hello. Failed",Toast.LENGTH_SHORT).show();
-                        Log.v("TGA","Message=>"+e.getMessage());
-                        dialog.dismiss();
-
-                    }
-                });
-
+        Intent openActivity = new Intent(MainActivity.this, GDriveDebugViewActivity.class);
+        startActivity(openActivity);
     }
 
 }
