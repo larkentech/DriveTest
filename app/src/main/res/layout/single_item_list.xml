@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:paddingBottom="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Item"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="18sp"
+                android:id="@+id/singleItemName"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10000001"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:id="@+id/singleItemBarcode"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/darker_gray" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cost Price"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:layout_margin="8dp"
+                    android:layout_columnWeight="1" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cost Price"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:layout_margin="8dp"
+                    android:layout_columnWeight="1" />
+
+                <TextView
+                    android:id="@+id/singleCostPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="670"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:layout_columnWeight="1" />
+
+                <TextView
+                    android:id="@+id/singleRetailPrice"
+                    android:layout_width="0dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="wrap_content"
+                    android:text="670"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:layout_columnWeight="1" />
+
+
+
+            </GridLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>
